@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
-import { ByCapitalPageComponent } from './pages/by-capital-page.component/by-capital-page.component';
-import { CountryLayoutComponent } from './layouts/countryLayout.component/countryLayout.component';
-import { ByCountrycomponent } from './pages/by-country/by-country.component';
-import { ByRegioncomponent } from './pages/by-region/by-region.component';
+import { ByCapitalPageComponent } from './pages/by-capital-page/by-capital-page.component';
+import { CountryLayoutComponent } from './layouts/countryLayout/countryLayout.component';
+import { ByCountrycomponent } from './pages/by-country-page/by-country.component';
+import { ByRegioncomponent } from './pages/by-region-page/by-region.component';
 import { CountryPageComponent } from './pages/country-page/country-page.component';
 
 export const countryRoutes: Routes = [

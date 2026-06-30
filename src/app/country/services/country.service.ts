@@ -27,8 +27,25 @@ export class CountryService {
       .pipe(
         map((response) => CountryMapper.mapRestCountryArrayToCountryArray(response.data.objects)),
         catchError((error) => {
-          //console.error('Error fetching countries by capital:', error);
+          console.error('Error fetching countries by capital:', error);
           return throwError(() => new Error(`No se pudo encontrar países para la capital especificada ${normalizedQuery}`));
+        })
+    );
+  }
+
+  searchByCountry(query: string): Observable<Country[]> {
+    const normalizedQuery = query.trim().toLowerCase();
+    const options = {
+      headers: new HttpHeaders({ Authorization: `Bearer ${API_TOKEN}` }),
+    };
+
+    return this.http
+      .get<{ data: { objects: RESTCountry[] } }>(`${API_URL}/names.common/${normalizedQuery}`, options)
+      .pipe(
+        map((response) => CountryMapper.mapRestCountryArrayToCountryArray(response.data.objects)),
+        catchError((error) => {
+          console.error('Error fetching countries by country name:', error);
+          return throwError(() => new Error(`No se pudo encontrar países para el nombre especificado ${normalizedQuery}`));
         })
     );
   }

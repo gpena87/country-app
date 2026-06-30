@@ -4,6 +4,8 @@ import { SearchInputComponent } from '../../components/search-input/search-input
 import { CountryListComponent } from '../../components/country-list/country-list.component';
 import { CountryService } from '../../services/country.service';
 import { Country } from '../../interfaces/country.interface';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-by-capital-page.component',
@@ -14,26 +16,27 @@ export class ByCapitalPageComponent {
   countryService = inject(CountryService);
   query = signal('');
 
-  countryResource = resource<Country[], { query: string }>({
+  // countryResource = resource<Country[], { query: string }>({
+  //   params: () => ({ query: this.query() }),
+  //   loader: async ({ params }) => {
+  //     const query = params.query?.trim() ?? '';
+
+  //     if (!query) return [];
+
+  //     return await firstValueFrom(this.countryService.searchByCapital(query));
+  //   },
+  //   defaultValue: [],
+  // });
+
+  countryResource = rxResource<Country[], { query: string }>({
     params: () => ({ query: this.query() }),
-    loader: async ({ params }) => {
+    stream: ({ params }) => {
       const query = params.query?.trim() ?? '';
 
-      if (!query) return [];
+      if (!query) return of([]);
 
-      return await firstValueFrom(this.countryService.searchByCapital(query));
+      return this.countryService.searchByCapital(query);
     },
     defaultValue: [],
   });
-
-  // isLoading = computed(() => this.countryResource.status() === 'loading');
-  // isError = computed(() => {
-  //   const error = this.countryResource.error();
-  //   return error instanceof Error ? error.message : null;
-  // });
-  // countries = computed(() => this.countryResource.value() ?? []);
-
-  // onSearch(query: string): void {
-  //   this.query.set(query);
-  // }
 }

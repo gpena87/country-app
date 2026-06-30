@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { RESTCountry } from '../interfaces/rest-countries-arr.interface';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { Country } from '../interfaces/country.interface';
 import { CountryMapper } from '../mappers/country.mapper';
 
@@ -24,6 +24,12 @@ export class CountryService {
 
     return this.http
       .get<{ data: { objects: RESTCountry[] } }>(`${API_URL}/capitals/${normalizedQuery}`, options)
-      .pipe(map((response) => CountryMapper.mapRestCountryArrayToCountryArray(response.data.objects)));
+      .pipe(
+        map((response) => CountryMapper.mapRestCountryArrayToCountryArray(response.data.objects)),
+        catchError((error) => {
+          //console.error('Error fetching countries by capital:', error);
+          return throwError(() => new Error(`No se pudo encontrar países para la capital especificada ${normalizedQuery}`));
+        })
+    );
   }
 }

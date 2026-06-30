@@ -11,7 +11,7 @@ export class CountryMapper {
         url_svg: restCountry.flag.url_svg,
         url_png: restCountry.flag.url_png,
       },
-      name: restCountry.names.common,
+      name: restCountry.names.translations['spa'].common,
       capital: restCountry.capitals[0]?.name || 'N/A',
       population: restCountry.population,
     };

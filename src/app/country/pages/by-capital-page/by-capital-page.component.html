@@ -1,2 +1,9 @@
-<country-search-input placeholder="Buscar por capital" (value)="onSearch($event)"/>
-<country-list [countries]="countries()"/>
+<country-search-input placeholder="Buscar por capital" (value)="onSearch($event)" />
+
+@if (isError()) {
+  <div class="alert alert-danger mt-2" role="alert">
+    {{ isError() }}
+  </div>
+} @else {
+  <country-list [countries]="countries()" />
+}

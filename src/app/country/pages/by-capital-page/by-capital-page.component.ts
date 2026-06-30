@@ -16,7 +16,6 @@ export class ByCapitalPageComponent {
   isLoading = signal(false);
   isError = signal<string | null>(null);
   countries = signal<Country[]>([]);
-  //countries = signal([]);
 
   onSearch( query: string ): void {
     if (this.isLoading()) return;
@@ -24,10 +23,17 @@ export class ByCapitalPageComponent {
     this.isLoading.set( true );
     this.isError.set( null );
 
-    this.countryService.searchByCapital(query).subscribe((response) => {
-      this.isLoading.set(false);
-      this.countries.set(response);
-    })
+    this.countryService.searchByCapital(query).subscribe({
+      next: (response) => {
+        this.isLoading.set(false);
+        this.countries.set(response);
+      },
+      error: (error) => {
+        console.log(error);
+        this.isLoading.set(false);
+        this.isError.set(error);
+        this.countries.set([]);
+      }
+    });
   };
 }
-

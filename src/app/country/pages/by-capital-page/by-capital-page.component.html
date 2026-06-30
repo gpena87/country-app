@@ -1,9 +1,8 @@
 <country-search-input placeholder="Buscar por capital" (value)="query.set($event)" />
 
-@if (countryResource.error()) {
-  <div class="alert alert-danger mt-2" role="alert">
-    {{ countryResource.error() }}
-  </div>
-} @else {
-  <country-list [countries]="countryResource.value()" />
-}
+<country-list
+  [countries]="countryResource.value()"
+  [errorMessage]="countryResource.error()?.message"
+  [isLoading]="countryResource.isLoading()"
+  [isEmpty]="countryResource.value().length === 0"
+/>

@@ -1,39 +1,39 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, resource } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { SearchInputComponent } from '../../components/search-input/search-input.component';
 import { CountryListComponent } from '../../components/country-list/country-list.component';
 import { CountryService } from '../../services/country.service';
-import { RESTCountry } from '../../interfaces/rest-countries-arr.interface';
 import { Country } from '../../interfaces/country.interface';
+
 @Component({
   selector: 'app-by-capital-page.component',
   imports: [SearchInputComponent, CountryListComponent],
   templateUrl: './by-capital-page.component.html',
 })
 export class ByCapitalPageComponent {
-
   countryService = inject(CountryService);
+  query = signal('');
 
-  isLoading = signal(false);
-  isError = signal<string | null>(null);
-  countries = signal<Country[]>([]);
+  countryResource = resource<Country[], { query: string }>({
+    params: () => ({ query: this.query() }),
+    loader: async ({ params }) => {
+      const query = params.query?.trim() ?? '';
 
-  onSearch( query: string ): void {
-    if (this.isLoading()) return;
+      if (!query) return [];
 
-    this.isLoading.set( true );
-    this.isError.set( null );
+      return await firstValueFrom(this.countryService.searchByCapital(query));
+    },
+    defaultValue: [],
+  });
 
-    this.countryService.searchByCapital(query).subscribe({
-      next: (response) => {
-        this.isLoading.set(false);
-        this.countries.set(response);
-      },
-      error: (error) => {
-        console.log(error);
-        this.isLoading.set(false);
-        this.isError.set(error);
-        this.countries.set([]);
-      }
-    });
-  };
+  // isLoading = computed(() => this.countryResource.status() === 'loading');
+  // isError = computed(() => {
+  //   const error = this.countryResource.error();
+  //   return error instanceof Error ? error.message : null;
+  // });
+  // countries = computed(() => this.countryResource.value() ?? []);
+
+  // onSearch(query: string): void {
+  //   this.query.set(query);
+  // }
 }

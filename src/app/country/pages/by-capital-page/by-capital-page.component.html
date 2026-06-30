@@ -1,9 +1,9 @@
-<country-search-input placeholder="Buscar por capital" (value)="onSearch($event)" />
+<country-search-input placeholder="Buscar por capital" (value)="query.set($event)" />
 
-@if (isError()) {
+@if (countryResource.error()) {
   <div class="alert alert-danger mt-2" role="alert">
-    {{ isError() }}
+    {{ countryResource.error() }}
   </div>
 } @else {
-  <country-list [countries]="countries()" />
+  <country-list [countries]="countryResource.value()" />
 }

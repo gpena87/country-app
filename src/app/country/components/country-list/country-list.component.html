@@ -11,5 +11,30 @@
         <th></th>
       </tr>
     </thead>
+    <tbody>
+      @for (country of countries(); track country.cca2; let index = $index) {
+        <tr>
+          <td>{{ index + 1 }}</td>
+          <td>{{ country.flag.emoji }}</td>
+          <td>
+            <img
+              [src]="country.flag.url_svg"
+              [alt]="country.name"
+              class="w-10"
+            />
+          </td>
+          <td>{{ country.name }}</td>
+          <td>{{ country.capital }}</td>
+          <td>{{ country.population }}</td>
+          <td>
+            <a class="link-primary cursor-pointer">Mas informacion</a>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="7" class="text-center py-4">No hay resultados</td>
+        </tr>
+      }
+    </tbody>
   </table>
 </section>

@@ -2,6 +2,7 @@ import { Component, output, input } from '@angular/core';
 
 @Component({
   selector: 'country-search-input',
+  standalone: true,
   imports: [],
   templateUrl: './search-input.component.html',
 })

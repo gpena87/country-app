@@ -9,8 +9,5 @@
 }
 
 @if (countryResource.value()) {
-  <section class="flex flex-col items-center justify-center mt-10">
-    <h1>{{ countryResource.value()?.name }}</h1>
-    <p>{{ countryResource.value()?.capital }}</p>
-  </section>
+    <country-information-page [country]="countryResource.value()!" />
 }

@@ -4,10 +4,11 @@ import { CountryService } from '../../services/country.service';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { of } from 'rxjs';
 import { Country } from '../../interfaces/country.interface';
+import { NotFoundComponent } from '../../../shared/components/not-found/not-found.component';
 
 @Component({
   selector: 'country-page',
-  imports: [],
+  imports: [NotFoundComponent],
   templateUrl: './country-page.component.html',
 })
 export class CountryPageComponent {

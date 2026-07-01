@@ -1,7 +1,10 @@
 @if (countryResource.error()) {
+  <app-not-found />
+}
+
+@if (countryResource.isLoading()) {
   <section class="flex flex-col items-center justify-center mt-10">
-    <h1>No se encontró el país</h1>
-    <a href="" class="link-primary cursor-pointer">Volver a la lista de países</a>
+    <h1>Cargando...</h1>
   </section>
 }
 

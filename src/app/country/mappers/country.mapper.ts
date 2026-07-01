@@ -5,7 +5,7 @@ export class CountryMapper {
 
   static mapRestCountryToCountry(restCountry: RESTCountry): Country {
     return {
-      cca2: restCountry.uuid,
+      cca2: restCountry.codes.alpha_2,
       flag: {
         emoji: restCountry.flag.emoji,
         url_svg: restCountry.flag.url_svg,
